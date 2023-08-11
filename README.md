@@ -2,8 +2,10 @@
 
 ## Install dependence packages
 
-slackpkg -batch=on -default_answer=y install zlib gd libxslt fontconfig libxcb libX11 libXau libXdmcp
-
+```bash
+slackpkg -batch=on -default_answer=y install zlib \
+gd libxslt fontconfig libxcb libX11 libXau libXdmcp
+```
 ## and then build openresty package
 
 ```bash
