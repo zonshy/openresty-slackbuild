@@ -195,7 +195,7 @@ chmod 0755 $PKG/etc/profile.d/openresty.csh
 chmod 0755 $PKG/etc/profile.d/openresty.sh
 
 # Don't clobber config files
-for i in $(find $PKG/etc/$PRGNAM -type f ! -name "*\.default"); do
+for i in $(find $PKG/usr/local/openresty/nginx/conf/ -type f ! -name "*\.default"); do
   mv "$i" "$i".new
 done
 
