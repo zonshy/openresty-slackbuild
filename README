@@ -1,5 +1,9 @@
 openresty is a dynamic web platform based on NGINX and LuaJIT.
 
+Install dependence packages
+  slackpkg -batch=on -default_answer=y install zlib \
+    gd libxslt fontconfig libxcb libX11 libXau libXdmcp libXpm
+
 By default, openresty will use the "nobody" user and group accounts. You may
 specify alternate values on the command line if desired; for example:
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Slackware build script for nginx
+# Slackware build script for openresty
 
 # Copyright 2008 Cherife Li <cherife-#-dotimes.com>
 # Copyright 2011 Diogo Leal <diogo@diogoleal.com>
@@ -30,7 +30,7 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PRGNAM=openresty
-VERSION=${VERSION:-1.21.4.2}
+VERSION=${VERSION:-1.21.4.3}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 PKGTYPE=${PKGTYPE:-tgz}
@@ -179,6 +179,20 @@ cat $CWD/openresty.SlackBuild > $PKG/usr/doc/openresty-$VERSION/openresty.SlackB
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
+
+# Put the profile scripts for setting PATH and env variables
+mkdir -p $PKG/etc/profile.d
+cat > $PKG/etc/profile.d/openresty.csh << EOF
+#!/bin/csh
+setenv PATH /usr/local/openresty/bin:\${PATH}
+EOF
+cat > $PKG/etc/profile.d/openresty.sh << EOF
+#!/bin/sh
+export PATH="/usr/local/openresty/bin:\${PATH}"
+EOF
+
+chmod 0755 $PKG/etc/profile.d/openresty.csh
+chmod 0755 $PKG/etc/profile.d/openresty.sh
 
 # Don't clobber config files
 for i in $(find $PKG/etc/$PRGNAM -type f ! -name "*\.default"); do

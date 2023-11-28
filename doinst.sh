@@ -24,3 +24,12 @@ preserve_perms() {
 
 preserve_perms etc/rc.d/rc.openresty.new
 config etc/logrotate.d/openresty.new
+config usr/local/openresty/nginx/conf/fastcgi_params.new
+config usr/local/openresty/nginx/conf/fastcgi.conf.new
+config usr/local/openresty/nginx/conf/mime.types.new
+config usr/local/openresty/nginx/conf/nginx.conf.new
+config usr/local/openresty/nginx/conf/koi-utf.new
+config usr/local/openresty/nginx/conf/koi-win.new
+config usr/local/openresty/nginx/conf/scgi_params.new
+config usr/local/openresty/nginx/conf/uwsgi_params.new
+config usr/local/openresty/nginx/conf/win-utf.new
