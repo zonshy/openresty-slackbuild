@@ -87,7 +87,8 @@ find -L . \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
-  --prefix=/usr/local/openresty \
+  --prefix=/opt/openresty \
+  --conf-path=/etc/openresty/nginx.conf \
   --pid-path=/var/run/openresty.pid \
   --user=${NGINXUSER:=nobody} \
   --group=${NGINXGROUP:=nogroup} \
@@ -96,6 +97,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-file-aio \
   --with-select_module \
   --with-poll_module \
+  --with-threads \
   --with-http_ssl_module \
   --with-http_v2_module \
   --with-http_realip_module \
@@ -140,13 +142,15 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 mkdir -p $PKG/usr/man/man8
-#install -m 0644 objs/nginx.8 $PKG/usr/man/man8
+install -m 0644 ./build/nginx-1.21.4/docs/man/nginx.8 $PKG/usr/man/man8
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 
 find $PKG -name perllocal.pod \
   -o -name ".packlist" \
   -o -name "*.bs" \
   | xargs rm -f
+
+find $PKG/opt/openresty/ -type d -empty -delete
 
 find $PKG -perm 444 -exec chmod 0644 {} \;
 find $PKG -perm 555 -exec chmod 0755 {} \;
@@ -172,6 +176,9 @@ sed -e "s,@USER@,$NGINXUSER," -e "s,@GROUP@,$NGINXGROUP," $CWD/openresty.logrota
 chown $NGINXUSER $PKG/var/log/$PRGNAM
 chmod 750 $PKG/var/log/$PRGNAM
 
+# Create sub-directory for virtual servers.
+mkdir $PKG/etc/$PRGNAM/conf.d
+
 mkdir -p $PKG/usr/doc/openresty-$VERSION
 #cp -a CHANGES* LICENSE README $PKG/usr/doc/openresty-$VERSION
 cat $CWD/openresty.SlackBuild > $PKG/usr/doc/openresty-$VERSION/openresty.SlackBuild
@@ -180,22 +187,10 @@ mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
-# Put the profile scripts for setting PATH and env variables
-mkdir -p $PKG/etc/profile.d
-cat > $PKG/etc/profile.d/openresty.csh << EOF
-#!/bin/csh
-setenv PATH /usr/local/openresty/bin:\${PATH}
-EOF
-cat > $PKG/etc/profile.d/openresty.sh << EOF
-#!/bin/sh
-export PATH="/usr/local/openresty/bin:\${PATH}"
-EOF
-
-chmod 0755 $PKG/etc/profile.d/openresty.csh
-chmod 0755 $PKG/etc/profile.d/openresty.sh
+ln -sf $PKG/opt/openresty/nginx/sbin/nginx /usr/bin/openresty
 
 # Don't clobber config files
-for i in $(find $PKG/usr/local/openresty/nginx/conf/ -type f ! -name "*\.default"); do
+for i in $(find $PKG/etc/$PRGNAM -type f ! -name "*\.default"); do
   mv "$i" "$i".new
 done
 

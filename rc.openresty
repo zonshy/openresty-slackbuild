@@ -3,8 +3,8 @@
 # Openresty daemon control script.
 # Written for Slackware Linux by Cherife Li <cherife-#-dotimes.com>.
 
-BIN=/usr/local/openresty/bin/openresty
-CONF=/usr/local/openresty/nginx/conf/nginx.conf
+BIN=/usr/bin/openresty
+CONF=/etc/openresty/nginx.conf
 PID=/var/run/openresty.pid
 
 openresty_start() {

@@ -4,8 +4,9 @@ Install dependence packages
   slackpkg -batch=on -default_answer=y install zlib \
     gd libxslt fontconfig libxcb libX11 libXau libXdmcp libXpm
 
-By default, openresty will use the "nobody" user and group accounts. You may
-specify alternate values on the command line if desired; for example:
+By default, openresty will use the "nobody" user and group accounts.
+You may specify alternate values on the command line if desired;
+for example:
 
   OPENRESTYUSER=backup OPENRESTYGROUP=backup ./openresty.SlackBuild
 
@@ -29,10 +30,11 @@ them as a variable to the slackbuild as a space separated list of
 full paths to modules.  List of extra 3rd party modules available at
 http://wiki.openresty.org/3rdPartyModules.
 
-  ADDMODULE="/tmp/passenger-release-5.0.13/ext/openresty" ./openresty.SlackBuild
+  ADDMODULE="/tmp/passenger-release-5.0.13/ext/openresty" \
+     ./openresty.SlackBuild
 
 Using the optional dynamic loadable module support in openresty >=
-1.10.0. Understand that dynamic modules are a new feature in openresty and
-issues may arise until further testing is done.
+1.10.0. Understand that dynamic modules are a new feature in \
+openresty and issues may arise until further testing is done.
 
   DYNAMIC=yes ./openresty.SlackBuild
